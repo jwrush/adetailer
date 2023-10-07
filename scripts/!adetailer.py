@@ -803,6 +803,11 @@ def make_axis_on_xyz_grid():
             p._ad_xyz = {}
         p._ad_xyz[field] = x
 
+    def search_and_replace_prompt(p, x, xs):
+        p.prompt = p.prompt.replace(xs[0], x)
+        p.negative_prompt = p.negative_prompt.replace(xs[0], x)
+        set_value(p, p.prompt, xs, field="ad_prompt")
+
     axis = [
         xyz_grid.AxisOption(
             "[ADetailer] ADetailer model 1st",
@@ -819,6 +824,11 @@ def make_axis_on_xyz_grid():
             "[ADetailer] ADetailer negative prompt 1st",
             str,
             partial(set_value, field="ad_negative_prompt"),
+        ),
+        xyz_grid.AxisOption(
+            "[ADetailer] ADetailer AN Prompt S/R prompt 1st",
+            str,
+            search_and_replace_prompt
         ),
         xyz_grid.AxisOption(
             "[ADetailer] Mask erosion / dilation 1st",
